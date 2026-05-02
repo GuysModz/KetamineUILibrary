@@ -1,4 +1,3 @@
-
 -- Ketamine UI Library (Givenchy Edition)
 local Library = {}
 local TweenService = game:GetService("TweenService")
@@ -50,35 +49,35 @@ function Library:CreateWindow(options)
     Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
     Instance.new("UIStroke", Main).Color = Library.Theme.Border
 
-    -- Title Bar
+    -- Title Bar (Header)
     local Header = Instance.new("Frame", Main)
-    Header.BackgroundColor3 = Library.Theme.Header; Header.BorderSizePixel = 0; Header.Size = UDim2.new(1, 0, 0, 50); Header.ZIndex = 5
+    Header.BackgroundColor3 = Library.Theme.Header; Header.BorderSizePixel = 0; Header.Size = UDim2.new(1, 0, 0, 50); Header.ZIndex = 10
     Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 10)
-    local HeaderFix = Instance.new("Frame", Header); HeaderFix.BackgroundColor3 = Library.Theme.Header; HeaderFix.BorderSizePixel = 0; HeaderFix.Position = UDim2.new(0, 0, 0.5, 0); HeaderFix.Size = UDim2.new(1, 0, 0.5, 0); HeaderFix.ZIndex = 5
+    local HeaderFix = Instance.new("Frame", Header); HeaderFix.BackgroundColor3 = Library.Theme.Header; HeaderFix.BorderSizePixel = 0; HeaderFix.Position = UDim2.new(0, 0, 0.5, 0); HeaderFix.Size = UDim2.new(1, 0, 0.5, 0); HeaderFix.ZIndex = 10
 
     -- Logo
-    local Logo = Instance.new("Frame", Header); Logo.BackgroundTransparency = 1; Logo.Position = UDim2.new(0, 20, 0, 0); Logo.Size = UDim2.new(0, 150, 1, 0); Logo.ZIndex = 6
-    local L1 = Instance.new("TextLabel", Logo); L1.BackgroundTransparency = 1; L1.Size = UDim2.new(0, 0, 1, 0); L1.Font = Library.Theme.Font; L1.Text = "Keta"; L1.TextColor3 = Library.Theme.Text; L1.TextSize = 18; L1.TextXAlignment = Enum.TextXAlignment.Left; L1.AutomaticSize = Enum.AutomaticSize.X; L1.ZIndex = 6
-    local L2 = Instance.new("TextLabel", Logo); L2.BackgroundTransparency = 1; L2.Position = UDim2.new(0, 42, 0, 0); L2.Size = UDim2.new(0, 0, 1, 0); L2.Font = Library.Theme.Font; L2.Text = "mine"; L2.TextColor3 = Library.Theme.Accent; L2.TextSize = 18; L2.TextXAlignment = Enum.TextXAlignment.Left; L2.AutomaticSize = Enum.AutomaticSize.X; L2.ZIndex = 6
+    local Logo = Instance.new("Frame", Header); Logo.BackgroundTransparency = 1; Logo.Position = UDim2.new(0, 20, 0, 0); Logo.Size = UDim2.new(0, 150, 1, 0); Logo.ZIndex = 11
+    local L1 = Instance.new("TextLabel", Logo); L1.BackgroundTransparency = 1; L1.Size = UDim2.new(0, 0, 1, 0); L1.Font = Library.Theme.Font; L1.Text = "Keta"; L1.TextColor3 = Library.Theme.Text; L1.TextSize = 18; L1.TextXAlignment = Enum.TextXAlignment.Left; L1.AutomaticSize = Enum.AutomaticSize.X; L1.ZIndex = 11
+    local L2 = Instance.new("TextLabel", Logo); L2.BackgroundTransparency = 1; L2.Position = UDim2.new(0, 45, 0, 0); L2.Size = UDim2.new(0, 0, 1, 0); L2.Font = Library.Theme.Font; L2.Text = "mine"; L2.TextColor3 = Library.Theme.Accent; L2.TextSize = 18; L2.TextXAlignment = Enum.TextXAlignment.Left; L2.AutomaticSize = Enum.AutomaticSize.X; L2.ZIndex = 11
 
     -- Tabs
-    local TabContainer = Instance.new("Frame", Header); TabContainer.BackgroundTransparency = 1; TabContainer.Position = UDim2.new(1, -360, 0, 0); TabContainer.Size = UDim2.new(0, 340, 1, 0); TabContainer.ZIndex = 6
+    local TabContainer = Instance.new("Frame", Header); TabContainer.BackgroundTransparency = 1; TabContainer.Position = UDim2.new(1, -360, 0, 0); TabContainer.Size = UDim2.new(0, 340, 1, 0); TabContainer.ZIndex = 11
     local TabLayout = Instance.new("UIListLayout", TabContainer); TabLayout.FillDirection = Enum.FillDirection.Horizontal; TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right; TabLayout.VerticalAlignment = Enum.VerticalAlignment.Center; TabLayout.Padding = UDim.new(0, 20)
 
-    -- SubHeader
-    local SubHeader = Instance.new("Frame", Main); SubHeader.BackgroundColor3 = Library.Theme.SubHeader; SubHeader.BorderSizePixel = 0; SubHeader.Position = UDim2.new(0, 0, 0, 50); SubHeader.Size = UDim2.new(1, 0, 0, 35); SubHeader.ZIndex = 4
-    local B1 = Instance.new("Frame", SubHeader); B1.BackgroundColor3 = Library.Theme.Border; B1.BorderSizePixel = 0; B1.Size = UDim2.new(1, 0, 0, 1); B1.ZIndex = 4
-    local B2 = Instance.new("Frame", SubHeader); B2.BackgroundColor3 = Library.Theme.Border; B2.BorderSizePixel = 0; B2.Position = UDim2.new(0, 0, 1, -1); B2.Size = UDim2.new(1, 0, 0, 1); B2.ZIndex = 4
+    -- SubHeader Bar
+    local SubHeader = Instance.new("Frame", Main); SubHeader.BackgroundColor3 = Library.Theme.SubHeader; SubHeader.BorderSizePixel = 0; SubHeader.Position = UDim2.new(0, 0, 0, 50); SubHeader.Size = UDim2.new(1, 0, 0, 35); SubHeader.ZIndex = 9
+    local B1 = Instance.new("Frame", SubHeader); B1.BackgroundColor3 = Library.Theme.Border; B1.BorderSizePixel = 0; B1.Size = UDim2.new(1, 0, 0, 1); B1.ZIndex = 9
+    local B2 = Instance.new("Frame", SubHeader); B2.BackgroundColor3 = Library.Theme.Border; B2.BorderSizePixel = 0; B2.Position = UDim2.new(0, 0, 1, -1); B2.Size = UDim2.new(1, 0, 0, 1); B2.ZIndex = 9
 
-    -- Content
-    local Content = Instance.new("Frame", Main); Content.BackgroundTransparency = 1; Content.Position = UDim2.new(0, 0, 0, 85); Content.Size = UDim2.new(1, 0, 1, -85); Content.ZIndex = 1
+    -- Content Area (Lowered to prevent overlap)
+    local Content = Instance.new("Frame", Main); Content.BackgroundTransparency = 1; Content.Position = UDim2.new(0, 0, 0, 95); Content.Size = UDim2.new(1, 0, 1, -95); Content.ZIndex = 1
 
     Library:MakeDraggable(Header, Main)
 
     local Window = {}
     function Window:CreateTab(name)
-        local TabBtn = Instance.new("TextButton", TabContainer); TabBtn.BackgroundTransparency = 1; TabBtn.Font = Library.Theme.Font; TabBtn.Text = name; TabBtn.TextColor3 = Library.Theme.TextInactive; TabBtn.TextSize = 14; TabBtn.AutomaticSize = Enum.AutomaticSize.X; TabBtn.Size = UDim2.new(0, 0, 1, 0); TabBtn.ZIndex = 7
-        local Page = Instance.new("ScrollingFrame", Content); Page.Visible = false; Page.BackgroundTransparency = 1; Page.BorderSizePixel = 0; Page.Size = UDim2.new(1, 0, 1, 0); Page.ScrollBarThickness = 2; Page.ScrollBarImageColor3 = Library.Theme.Accent; Page.CanvasSize = UDim2.new(0, 0, 0, 0); Page.ZIndex = 2
+        local TabBtn = Instance.new("TextButton", TabContainer); TabBtn.BackgroundTransparency = 1; TabBtn.Font = Library.Theme.Font; TabBtn.Text = name; TabBtn.TextColor3 = Library.Theme.TextInactive; TabBtn.TextSize = 14; TabBtn.AutomaticSize = Enum.AutomaticSize.X; TabBtn.Size = UDim2.new(0, 0, 1, 0); TabBtn.ZIndex = 12
+        local Page = Instance.new("ScrollingFrame", Content); Page.Visible = false; Page.BackgroundTransparency = 1; Page.BorderSizePixel = 0; Page.Size = UDim2.new(1, 0, 1, 0); Page.ScrollBarThickness = 2; Page.ScrollBarImageColor3 = Library.Theme.Accent; Page.CanvasSize = UDim2.new(0, 0, 0, 0); Page.ZIndex = 2; Page.ClipsDescendants = true
         local PageLayout = Instance.new("UIGridLayout", Page); PageLayout.CellPadding = UDim2.new(0, 15, 0, 15); PageLayout.CellSize = UDim2.new(0, 252, 0, 0); PageLayout.SortOrder = Enum.SortOrder.LayoutOrder; PageLayout.FillDirection = Enum.FillDirection.Horizontal
         local Padding = Instance.new("UIPadding", Page); Padding.PaddingLeft = UDim.new(0, 15); Padding.PaddingRight = UDim.new(0, 15); Padding.PaddingTop = UDim.new(0, 20)
         PageLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function() Page.CanvasSize = UDim2.new(0, 0, 0, PageLayout.AbsoluteContentSize.Y + 40) end)
