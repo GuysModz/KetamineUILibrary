@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KetamineUI — Themes</title>
+    <meta name="description" content="Browse and apply built-in UI themes for KetamineUI. Dark, Neon, Glass, Midnight, Rosé, Ember, and Arctic.">
+    <meta name="theme-color" content="#9b59ff">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lua.min.js"></script>
+    <style>
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .theme-card {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .theme-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(155, 89, 255, 0.15);
+        }
+        .theme-preview {
+            padding: 1.25rem;
+            min-height: 200px;
+            position: relative;
+        }
+        .theme-info {
+            padding: 1rem 1.25rem;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+        }
+        .theme-name {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .theme-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.75rem;
+        }
+        .theme-copy-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s ease;
+        }
+        .theme-copy-btn:hover {
+            background: #a66dff;
+        }
+        .theme-copy-btn.copied {
+            background: #64dc8c;
+        }
+
+        /* Mini UI mockups */
+        .mock-window {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .mock-titlebar {
+            padding: 0.6rem 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .mock-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .mock-dots {
+            display: flex;
+            gap: 4px;
+        }
+        .mock-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .mock-content {
+            padding: 0.6rem 0.8rem;
+        }
+        .mock-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.6rem;
+            border-radius: 6px;
+            margin-bottom: 0.4rem;
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+        .mock-switch {
+            width: 28px;
+            height: 14px;
+            border-radius: 7px;
+            position: relative;
+        }
+        .mock-knob {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
+        .mock-slider-track {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 0.3rem;
+        }
+        .mock-slider-fill {
+            height: 100%;
+            border-radius: 2px;
+            width: 65%;
+        }
+        .mock-button {
+            padding: 0.4rem;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+            margin-top: 0.4rem;
+        }
+
+        /* Theme-specific styles */
+        .theme-default .mock-window { background: #0e0a16; border: 1px solid rgba(155,89,255,0.3); }
+        .theme-default .mock-titlebar { background: #161023; }
+        .theme-default .mock-title { color: #9b59ff; }
+        .theme-default .mock-dot:nth-child(1) { background: #b43c78; }
+        .theme-default .mock-dot:nth-child(2) { background: #201834; }
+        .theme-default .mock-toggle { background: #161023; color: #e6dcfa; }
+        .theme-default .mock-switch { background: #8c64ff; }
+        .theme-default .mock-content { background: #0e0a16; }
+        .theme-default .mock-slider-track { background: #201834; }
+        .theme-default .mock-slider-fill { background: #9b59ff; }
+        .theme-default .mock-button { background: #201834; color: #e6dcfa; }
+
+        .theme-glass .mock-window { background: rgba(20,15,35,0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); }
+        .theme-glass .mock-titlebar { background: rgba(255,255,255,0.05); }
+        .theme-glass .mock-title { color: #e0d6ff; }
+        .theme-glass .mock-dot:nth-child(1) { background: rgba(255,100,130,0.8); }
+        .theme-glass .mock-dot:nth-child(2) { background: rgba(255,255,255,0.1); }
+        .theme-glass .mock-toggle { background: rgba(255,255,255,0.05); color: #e6dcfa; }
+        .theme-glass .mock-switch { background: rgba(155,89,255,0.7); }
+        .theme-glass .mock-content { background: transparent; }
+        .theme-glass .mock-slider-track { background: rgba(255,255,255,0.08); }
+        .theme-glass .mock-slider-fill { background: rgba(155,89,255,0.7); }
+        .theme-glass .mock-button { background: rgba(255,255,255,0.06); color: #e6dcfa; border: 1px solid rgba(255,255,255,0.1); }
+
+        .theme-neon .mock-window { background: #050508; border: 1px solid #00ffaa; box-shadow: 0 0 15px rgba(0,255,170,0.2), inset 0 0 15px rgba(0,255,170,0.03); }
+        .theme-neon .mock-titlebar { background: #0a0a10; }
+        .theme-neon .mock-title { color: #00ffaa; text-shadow: 0 0 8px rgba(0,255,170,0.5); }
+        .theme-neon .mock-dot:nth-child(1) { background: #ff0055; box-shadow: 0 0 6px #ff0055; }
+        .theme-neon .mock-dot:nth-child(2) { background: #111; }
+        .theme-neon .mock-toggle { background: #0a0a10; color: #00ffaa; }
+        .theme-neon .mock-switch { background: #00ffaa; box-shadow: 0 0 8px rgba(0,255,170,0.5); }
+        .theme-neon .mock-content { background: #050508; }
+        .theme-neon .mock-slider-track { background: #111; }
+        .theme-neon .mock-slider-fill { background: #00ffaa; box-shadow: 0 0 6px rgba(0,255,170,0.5); }
+        .theme-neon .mock-button { background: #0a0a10; color: #00ffaa; border: 1px solid rgba(0,255,170,0.3); }
+
+        .theme-midnight .mock-window { background: #0d1117; border: 1px solid rgba(88,166,255,0.2); }
+        .theme-midnight .mock-titlebar { background: #161b22; }
+        .theme-midnight .mock-title { color: #58a6ff; }
+        .theme-midnight .mock-dot:nth-child(1) { background: #f85149; }
+        .theme-midnight .mock-dot:nth-child(2) { background: #21262d; }
+        .theme-midnight .mock-toggle { background: #161b22; color: #c9d1d9; }
+        .theme-midnight .mock-switch { background: #58a6ff; }
+        .theme-midnight .mock-content { background: #0d1117; }
+        .theme-midnight .mock-slider-track { background: #21262d; }
+        .theme-midnight .mock-slider-fill { background: #58a6ff; }
+        .theme-midnight .mock-button { background: #161b22; color: #c9d1d9; }
+
+        .theme-rose .mock-window { background: #1a0a14; border: 1px solid rgba(255,100,150,0.3); }
+        .theme-rose .mock-titlebar { background: #22101a; }
+        .theme-rose .mock-title { color: #ff6496; }
+        .theme-rose .mock-dot:nth-child(1) { background: #ff6496; }
+        .theme-rose .mock-dot:nth-child(2) { background: #2a1520; }
+        .theme-rose .mock-toggle { background: #22101a; color: #ffd6e6; }
+        .theme-rose .mock-switch { background: #ff6496; }
+        .theme-rose .mock-content { background: #1a0a14; }
+        .theme-rose .mock-slider-track { background: #2a1520; }
+        .theme-rose .mock-slider-fill { background: #ff6496; }
+        .theme-rose .mock-button { background: #22101a; color: #ffd6e6; }
+
+        .theme-ember .mock-window { background: #140a02; border: 1px solid rgba(255,120,40,0.3); }
+        .theme-ember .mock-titlebar { background: #1e1008; }
+        .theme-ember .mock-title { color: #ff7828; }
+        .theme-ember .mock-dot:nth-child(1) { background: #ff4444; }
+        .theme-ember .mock-dot:nth-child(2) { background: #2a1a0a; }
+        .theme-ember .mock-toggle { background: #1e1008; color: #ffe6d0; }
+        .theme-ember .mock-switch { background: #ff7828; }
+        .theme-ember .mock-content { background: #140a02; }
+        .theme-ember .mock-slider-track { background: #2a1a0a; }
+        .theme-ember .mock-slider-fill { background: #ff7828; }
+        .theme-ember .mock-button { background: #1e1008; color: #ffe6d0; }
+
+        .theme-arctic .mock-window { background: #f8fafc; border: 1px solid #e2e8f0; }
+        .theme-arctic .mock-titlebar { background: #ffffff; }
+        .theme-arctic .mock-title { color: #6366f1; }
+        .theme-arctic .mock-dot:nth-child(1) { background: #ef4444; }
+        .theme-arctic .mock-dot:nth-child(2) { background: #f1f5f9; }
+        .theme-arctic .mock-toggle { background: #f1f5f9; color: #1e293b; }
+        .theme-arctic .mock-switch { background: #6366f1; }
+        .theme-arctic .mock-content { background: #f8fafc; }
+        .theme-arctic .mock-slider-track { background: #e2e8f0; }
+        .theme-arctic .mock-slider-fill { background: #6366f1; }
+        .theme-arctic .mock-button { background: #f1f5f9; color: #1e293b; }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo" style="text-decoration:none">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">KetamineUI</span>
+            </a>
+            <span class="version-badge">v1.0</span>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Pages</span>
+                <a href="index.html" class="nav-link">Documentation</a>
+                <a href="themes.html" class="nav-link active">Themes</a>
+                <a href="preview.html" class="nav-link">Live Preview</a>
+                <a href="changelog.html" class="nav-link">Changelog</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Themes</span>
+                <a href="#default" class="nav-link">Default</a>
+                <a href="#glass" class="nav-link">Glass</a>
+                <a href="#neon" class="nav-link">Neon</a>
+                <a href="#midnight" class="nav-link">Midnight</a>
+                <a href="#rose" class="nav-link">Rosé</a>
+                <a href="#ember" class="nav-link">Ember</a>
+                <a href="#arctic" class="nav-link">Arctic</a>
+            </div>
+        </div>
+    </nav>
+
+    <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" title="Back to top">↑</button>
+
+    <main class="content">
+        <section class="doc-section" id="themes-intro" style="border-top: none; padding-top: 3rem;">
+            <h2>UI Themes</h2>
+            <p>KetamineUI comes with built-in material themes that completely change the look and feel. Each theme modifies colors, transparencies, borders, and visual effects.</p>
+            <div class="info-box">
+                <span class="info-icon">💡</span>
+                <span>Apply a theme by passing <code>Theme = "ThemeName"</code> in CreateWindow, or use the code snippets below.</span>
+            </div>
+        </section>
+
+        <div class="theme-grid">
+            <!-- Default -->
+            <div class="theme-card" id="default">
+                <div class="theme-preview theme-default">
+                    <div class="mock-window">
+                        <div class="mock-titlebar">
+                            <span class="mock-title">My Hub</span>
+                            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div></div>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-toggle">
+                                <span>Aimbot</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>ESP</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>FOV Radius</span>
+                                <div style="flex:1;margin-left:8px;">
+                                    <div class="mock-slider-track"><div class="mock-slider-fill"></div></div>
+                                </div>
+                            </div>
+                            <div class="mock-button">Reset Character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Default</div>
+                    <div class="theme-desc">The signature dark purple theme. Clean, minimal, and elegant.</div>
+                    <button class="theme-copy-btn" onclick="copyTheme('default')">Copy Code</button>
+                </div>
+            </div>
+
+            <!-- Glass -->
+            <div class="theme-card" id="glass">
+                <div class="theme-preview theme-glass" style="background: linear-gradient(135deg, #1a0530, #0a0020, #150028);">
+                    <div class="mock-window">
+                        <div class="mock-titlebar">
+                            <span class="mock-title">My Hub</span>
+                            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div></div>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-toggle">
+                                <span>Aimbot</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>ESP</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>FOV Radius</span>
+                                <div style="flex:1;margin-left:8px;">
+                                    <div class="mock-slider-track"><div class="mock-slider-fill"></div></div>
+                                </div>
+                            </div>
+                            <div class="mock-button">Reset Character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Glass</div>
+                    <div class="theme-desc">Frosted glass with backdrop blur and soft transparency. Modern and sleek.</div>
+                    <button class="theme-copy-btn" onclick="copyTheme('glass')">Copy Code</button>
+                </div>
+            </div>
+
+            <!-- Neon -->
+            <div class="theme-card" id="neon">
+                <div class="theme-preview theme-neon" style="background: #020204;">
+                    <div class="mock-window">
+                        <div class="mock-titlebar">
+                            <span class="mock-title">My Hub</span>
+                            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div></div>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-toggle">
+                                <span>Aimbot</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>ESP</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>FOV Radius</span>
+                                <div style="flex:1;margin-left:8px;">
+                                    <div class="mock-slider-track"><div class="mock-slider-fill"></div></div>
+                                </div>
+                            </div>
+                            <div class="mock-button">Reset Character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Neon</div>
+                    <div class="theme-desc">Cyberpunk-inspired with glowing borders and neon green accents.</div>
+                    <button class="theme-copy-btn" onclick="copyTheme('neon')">Copy Code</button>
+                </div>
+            </div>
+
+            <!-- Midnight -->
+            <div class="theme-card" id="midnight">
+                <div class="theme-preview theme-midnight" style="background: #010409;">
+                    <div class="mock-window">
+                        <div class="mock-titlebar">
+                            <span class="mock-title">My Hub</span>
+                            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div></div>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-toggle">
+                                <span>Aimbot</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>ESP</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>FOV Radius</span>
+                                <div style="flex:1;margin-left:8px;">
+                                    <div class="mock-slider-track"><div class="mock-slider-fill"></div></div>
+                                </div>
+                            </div>
+                            <div class="mock-button">Reset Character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Midnight</div>
+                    <div class="theme-desc">GitHub-dark inspired with cool blue accents. Professional and clean.</div>
+                    <button class="theme-copy-btn" onclick="copyTheme('midnight')">Copy Code</button>
+                </div>
+            </div>
+
+            <!-- Rose -->
+            <div class="theme-card" id="rose">
+                <div class="theme-preview theme-rose" style="background: #120610;">
+                    <div class="mock-window">
+                        <div class="mock-titlebar">
+                            <span class="mock-title">My Hub</span>
+                            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div></div>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-toggle">
+                                <span>Aimbot</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>ESP</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>FOV Radius</span>
+                                <div style="flex:1;margin-left:8px;">
+                                    <div class="mock-slider-track"><div class="mock-slider-fill"></div></div>
+                                </div>
+                            </div>
+                            <div class="mock-button">Reset Character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Rosé</div>
+                    <div class="theme-desc">Warm pink tones on a deep dark base. Stylish and eye-catching.</div>
+                    <button class="theme-copy-btn" onclick="copyTheme('rose')">Copy Code</button>
+                </div>
+            </div>
+
+            <!-- Ember -->
+            <div class="theme-card" id="ember">
+                <div class="theme-preview theme-ember" style="background: #0a0500;">
+                    <div class="mock-window">
+                        <div class="mock-titlebar">
+                            <span class="mock-title">My Hub</span>
+                            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div></div>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-toggle">
+                                <span>Aimbot</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>ESP</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>FOV Radius</span>
+                                <div style="flex:1;margin-left:8px;">
+                                    <div class="mock-slider-track"><div class="mock-slider-fill"></div></div>
+                                </div>
+                            </div>
+                            <div class="mock-button">Reset Character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Ember</div>
+                    <div class="theme-desc">Fiery orange on pitch black. Bold and aggressive.</div>
+                    <button class="theme-copy-btn" onclick="copyTheme('ember')">Copy Code</button>
+                </div>
+            </div>
+
+            <!-- Arctic -->
+            <div class="theme-card" id="arctic">
+                <div class="theme-preview theme-arctic" style="background: #eef2f7;">
+                    <div class="mock-window">
+                        <div class="mock-titlebar">
+                            <span class="mock-title">My Hub</span>
+                            <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div></div>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-toggle">
+                                <span>Aimbot</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>ESP</span>
+                                <div class="mock-switch"><div class="mock-knob"></div></div>
+                            </div>
+                            <div class="mock-toggle">
+                                <span>FOV Radius</span>
+                                <div style="flex:1;margin-left:8px;">
+                                    <div class="mock-slider-track"><div class="mock-slider-fill"></div></div>
+                                </div>
+                            </div>
+                            <div class="mock-button">Reset Character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-name">Arctic</div>
+                    <div class="theme-desc">Light mode. Clean white background with indigo accents. Easy on the eyes.</div>
+                    <button class="theme-copy-btn" onclick="copyTheme('arctic')">Copy Code</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usage Section -->
+        <section class="doc-section" id="usage">
+            <h2>Usage</h2>
+            <p>Apply a theme by setting colors before creating your window:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local KetamineUI = loadstring(game:HttpGet("YOUR_LINK"))()
+
+-- Apply the "Neon" theme
+KetamineUI.Theme.Accent    = Color3.fromRGB(0, 255, 170)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(0, 180, 120)
+KetamineUI.Theme.BG        = Color3.fromRGB(5, 5, 8)
+KetamineUI.Theme.BG2       = Color3.fromRGB(10, 10, 16)
+KetamineUI.Theme.BG3       = Color3.fromRGB(17, 17, 25)
+KetamineUI.Theme.Text      = Color3.fromRGB(0, 255, 170)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(0, 140, 100)
+KetamineUI.Theme.On        = Color3.fromRGB(0, 255, 170)
+KetamineUI.Theme.Off       = Color3.fromRGB(20, 20, 30)
+
+local Window = KetamineUI:CreateWindow({Name = "Neon Hub"})</code></pre>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>KetamineUI — Built for speed. Designed for style.</p>
+        </footer>
+    </main>
+
+    <script>
+        hljs.highlightAll();
+
+        const themeCode = {
+            default: `-- Default Theme (already applied)
+KetamineUI.Theme.Accent    = Color3.fromRGB(155, 89, 255)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(100, 55, 190)
+KetamineUI.Theme.BG        = Color3.fromRGB(14, 10, 22)
+KetamineUI.Theme.BG2       = Color3.fromRGB(22, 16, 35)
+KetamineUI.Theme.BG3       = Color3.fromRGB(32, 24, 52)
+KetamineUI.Theme.Text      = Color3.fromRGB(230, 220, 250)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(120, 100, 160)
+KetamineUI.Theme.On        = Color3.fromRGB(140, 100, 255)
+KetamineUI.Theme.Off       = Color3.fromRGB(60, 45, 85)`,
+            glass: `-- Glass Theme
+KetamineUI.Theme.Accent    = Color3.fromRGB(155, 89, 255)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(100, 55, 190)
+KetamineUI.Theme.BG        = Color3.fromRGB(20, 15, 35)
+KetamineUI.Theme.BG2       = Color3.fromRGB(30, 22, 50)
+KetamineUI.Theme.BG3       = Color3.fromRGB(40, 30, 65)
+KetamineUI.Theme.Text      = Color3.fromRGB(224, 214, 255)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(140, 120, 180)
+KetamineUI.Theme.On        = Color3.fromRGB(155, 89, 255)
+KetamineUI.Theme.Off       = Color3.fromRGB(50, 40, 70)
+-- Note: BackgroundTransparency should be set to 0.3 on MainFrame for glass effect`,
+            neon: `-- Neon Theme
+KetamineUI.Theme.Accent    = Color3.fromRGB(0, 255, 170)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(0, 180, 120)
+KetamineUI.Theme.BG        = Color3.fromRGB(5, 5, 8)
+KetamineUI.Theme.BG2       = Color3.fromRGB(10, 10, 16)
+KetamineUI.Theme.BG3       = Color3.fromRGB(17, 17, 25)
+KetamineUI.Theme.Text      = Color3.fromRGB(0, 255, 170)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(0, 140, 100)
+KetamineUI.Theme.On        = Color3.fromRGB(0, 255, 170)
+KetamineUI.Theme.Off       = Color3.fromRGB(20, 20, 30)
+KetamineUI.Theme.Error     = Color3.fromRGB(255, 0, 85)`,
+            midnight: `-- Midnight Theme
+KetamineUI.Theme.Accent    = Color3.fromRGB(88, 166, 255)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(55, 120, 200)
+KetamineUI.Theme.BG        = Color3.fromRGB(13, 17, 23)
+KetamineUI.Theme.BG2       = Color3.fromRGB(22, 27, 34)
+KetamineUI.Theme.BG3       = Color3.fromRGB(33, 38, 45)
+KetamineUI.Theme.Text      = Color3.fromRGB(201, 209, 217)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(125, 133, 144)
+KetamineUI.Theme.On        = Color3.fromRGB(88, 166, 255)
+KetamineUI.Theme.Off       = Color3.fromRGB(33, 38, 45)
+KetamineUI.Theme.Error     = Color3.fromRGB(248, 81, 73)`,
+            rose: `-- Rosé Theme
+KetamineUI.Theme.Accent    = Color3.fromRGB(255, 100, 150)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(200, 60, 110)
+KetamineUI.Theme.BG        = Color3.fromRGB(26, 10, 20)
+KetamineUI.Theme.BG2       = Color3.fromRGB(34, 16, 26)
+KetamineUI.Theme.BG3       = Color3.fromRGB(42, 21, 32)
+KetamineUI.Theme.Text      = Color3.fromRGB(255, 214, 230)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(160, 100, 130)
+KetamineUI.Theme.On        = Color3.fromRGB(255, 100, 150)
+KetamineUI.Theme.Off       = Color3.fromRGB(50, 25, 38)
+KetamineUI.Theme.Error     = Color3.fromRGB(255, 60, 80)`,
+            ember: `-- Ember Theme
+KetamineUI.Theme.Accent    = Color3.fromRGB(255, 120, 40)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(200, 80, 20)
+KetamineUI.Theme.BG        = Color3.fromRGB(20, 10, 2)
+KetamineUI.Theme.BG2       = Color3.fromRGB(30, 16, 8)
+KetamineUI.Theme.BG3       = Color3.fromRGB(42, 26, 10)
+KetamineUI.Theme.Text      = Color3.fromRGB(255, 230, 208)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(160, 110, 70)
+KetamineUI.Theme.On        = Color3.fromRGB(255, 120, 40)
+KetamineUI.Theme.Off       = Color3.fromRGB(40, 25, 10)
+KetamineUI.Theme.Error     = Color3.fromRGB(255, 68, 68)`,
+            arctic: `-- Arctic (Light) Theme
+KetamineUI.Theme.Accent    = Color3.fromRGB(99, 102, 241)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(79, 82, 200)
+KetamineUI.Theme.BG        = Color3.fromRGB(248, 250, 252)
+KetamineUI.Theme.BG2       = Color3.fromRGB(255, 255, 255)
+KetamineUI.Theme.BG3       = Color3.fromRGB(241, 245, 249)
+KetamineUI.Theme.Text      = Color3.fromRGB(30, 41, 59)
+KetamineUI.Theme.TextDim   = Color3.fromRGB(100, 116, 139)
+KetamineUI.Theme.On        = Color3.fromRGB(99, 102, 241)
+KetamineUI.Theme.Off       = Color3.fromRGB(226, 232, 240)
+KetamineUI.Theme.Error     = Color3.fromRGB(239, 68, 68)`
+        };
+
+        function copyTheme(name) {
+            const code = themeCode[name];
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy Code';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Mobile nav
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        function toggleMobileNav() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+        document.getElementById('mobileNavToggle').addEventListener('click', toggleMobileNav);
+        overlay.addEventListener('click', toggleMobileNav);
+        document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => {
+            sidebar.classList.remove('open'); overlay.classList.remove('show');
+        }));
+
+        // Back to top
+        const backBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => backBtn.classList.toggle('show', window.scrollY > 400));
+    </script>
+</body>
+</html>

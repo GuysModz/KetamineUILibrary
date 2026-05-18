@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KetamineUI — Live Preview</title>
+    <meta name="description" content="Interactive live preview of KetamineUI elements. Try toggles, sliders, buttons, and tabs in your browser.">
+    <meta name="theme-color" content="#9b59ff">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lua.min.js"></script>
+    <style>
+        .preview-container {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            align-items: flex-start;
+        }
+        .preview-window {
+            flex: 1;
+            max-width: 380px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1.5px solid rgba(155, 89, 255, 0.3);
+            background: #0e0a16;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(155,89,255,0.08);
+            user-select: none;
+            position: sticky;
+            top: 2rem;
+        }
+        .pw-titlebar {
+            background: #161023;
+            padding: 0.9rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(155,89,255,0.1);
+        }
+        .pw-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #9b59ff;
+        }
+        .pw-subtitle {
+            font-size: 0.65rem;
+            color: #786498;
+            margin-top: 2px;
+        }
+        .pw-buttons {
+            display: flex;
+            gap: 6px;
+        }
+        .pw-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .pw-btn-close { background: rgb(180, 60, 120); }
+        .pw-btn-min { background: #201834; }
+        .pw-btn:hover { transform: scale(1.1); }
+
+        .pw-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 0.5rem 0.8rem;
+            background: #0e0a16;
+        }
+        .pw-tab {
+            padding: 0.35rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #786498;
+            background: #201834;
+        }
+        .pw-tab.active {
+            background: #9b59ff;
+            color: white;
+        }
+        .pw-tab:hover:not(.active) {
+            background: #2a1e44;
+        }
+
+        .pw-content {
+            padding: 0.5rem 0.8rem 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .pw-content::-webkit-scrollbar { width: 3px; }
+        .pw-content::-webkit-scrollbar-thumb { background: #9b59ff; border-radius: 2px; }
+
+        .pw-section {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #9b59ff;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.5rem 0 0.25rem 0.3rem;
+        }
+
+        .pw-card {
+            background: #161023;
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.15s;
+        }
+        .pw-card:hover { background: #201834; }
+        .pw-card-label {
+            font-size: 0.75rem;
+            color: #e6dcfa;
+            font-weight: 500;
+        }
+
+        /* Toggle */
+        .pw-toggle {
+            width: 36px;
+            height: 18px;
+            border-radius: 9px;
+            background: #3c2d55;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.25s;
+        }
+        .pw-toggle.on { background: #8c64ff; }
+        .pw-toggle-knob {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: white;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .pw-toggle.on .pw-toggle-knob { left: 20px; }
+
+        /* Slider */
+        .pw-slider-wrap {
+            flex: 1;
+            margin-left: 1rem;
+        }
+        .pw-slider-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .pw-slider-val {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #9b59ff;
+        }
+        .pw-slider-track {
+            height: 5px;
+            background: #201834;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .pw-slider-fill {
+            height: 100%;
+            background: #9b59ff;
+            border-radius: 3px;
+            transition: width 0.1s;
+        }
+
+        /* Button */
+        .pw-button {
+            background: #201834;
+            border-radius: 8px;
+            padding: 0.55rem;
+            margin-bottom: 0.35rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #e6dcfa;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .pw-button:hover { background: #6437be; }
+        .pw-button:active { background: #9b59ff; transform: scale(0.98); }
+
+        /* Dropdown */
+        .pw-dropdown {
+            background: #201834;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #9b59ff;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s;
+        }
+        .pw-dropdown:hover { background: #2a1e44; }
+        .pw-dropdown::after {
+            content: " ▾";
+            font-size: 0.6rem;
+        }
+
+        /* Label */
+        .pw-label {
+            background: #161023;
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.35rem;
+            font-size: 0.7rem;
+            color: #786498;
+        }
+
+        /* Description panel */
+        .preview-desc {
+            flex: 1;
+        }
+        .preview-desc h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .preview-desc p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .interaction-list {
+            list-style: none;
+            padding: 0;
+        }
+        .interaction-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .interaction-list li::before {
+            content: "→";
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 800px) {
+            .preview-container {
+                flex-direction: column;
+            }
+            .preview-window {
+                max-width: 100%;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo" style="text-decoration:none">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">KetamineUI</span>
+            </a>
+            <span class="version-badge">v1.0</span>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Pages</span>
+                <a href="index.html" class="nav-link">Documentation</a>
+                <a href="themes.html" class="nav-link">Themes</a>
+                <a href="preview.html" class="nav-link active">Live Preview</a>
+                <a href="changelog.html" class="nav-link">Changelog</a>
+            </div>
+        </div>
+    </nav>
+
+    <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" title="Back to top">↑</button>
+
+    <main class="content">
+        <section class="doc-section" style="border-top: none; padding-top: 3rem;">
+            <h2>Live Preview</h2>
+            <p>Interactive mock-up of the KetamineUI library. Click toggles, drag sliders, and interact with elements to see how they behave.</p>
+        </section>
+
+        <div class="preview-container">
+            <!-- Mock Window -->
+            <div class="preview-window">
+                <div class="pw-titlebar">
+                    <div>
+                        <div class="pw-title">Example Hub</div>
+                        <div class="pw-subtitle">v1.0 | Interactive Demo</div>
+                    </div>
+                    <div class="pw-buttons">
+                        <div class="pw-btn pw-btn-min">−</div>
+                        <div class="pw-btn pw-btn-close">✕</div>
+                    </div>
+                </div>
+
+                <div class="pw-tabs">
+                    <div class="pw-tab active" data-tab="combat">Combat</div>
+                    <div class="pw-tab" data-tab="visuals">Visuals</div>
+                    <div class="pw-tab" data-tab="misc">Misc</div>
+                </div>
+
+                <!-- Combat Tab -->
+                <div class="pw-content" id="tab-combat">
+                    <div class="pw-section">AIMBOT</div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Enable Aimbot</span>
+                        <div class="pw-toggle" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card" style="flex-direction: column; align-items: stretch;">
+                        <div class="pw-slider-info">
+                            <span class="pw-card-label">FOV Radius</span>
+                            <span class="pw-slider-val">200</span>
+                        </div>
+                        <div class="pw-slider-track" onmousedown="startSlider(event, this)">
+                            <div class="pw-slider-fill" style="width: 25%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card" style="flex-direction: column; align-items: stretch;">
+                        <div class="pw-slider-info">
+                            <span class="pw-card-label">Smoothness</span>
+                            <span class="pw-slider-val">20</span>
+                        </div>
+                        <div class="pw-slider-track" onmousedown="startSlider(event, this)">
+                            <div class="pw-slider-fill" style="width: 20%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Target Part</span>
+                        <div class="pw-dropdown" onclick="cycleDropdown(this, ['Head','HumanoidRootPart','UpperTorso'])">Head</div>
+                    </div>
+
+                    <div class="pw-section">TRIGGERBOT</div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Enable Triggerbot</span>
+                        <div class="pw-toggle" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Auto Shoot Delay</span>
+                        <div class="pw-toggle on" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visuals Tab -->
+                <div class="pw-content" id="tab-visuals" style="display: none;">
+                    <div class="pw-section">ESP</div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Player ESP</span>
+                        <div class="pw-toggle on" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Health Bars</span>
+                        <div class="pw-toggle on" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Show Distance</span>
+                        <div class="pw-toggle" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Show Names</span>
+                        <div class="pw-toggle on" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-section">WORLD</div>
+
+                    <div class="pw-card">
+                        <span class="pw-card-label">Fullbright</span>
+                        <div class="pw-toggle" onclick="toggleSwitch(this)">
+                            <div class="pw-toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card" style="flex-direction: column; align-items: stretch;">
+                        <div class="pw-slider-info">
+                            <span class="pw-card-label">Ambient</span>
+                            <span class="pw-slider-val">50</span>
+                        </div>
+                        <div class="pw-slider-track" onmousedown="startSlider(event, this)">
+                            <div class="pw-slider-fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Misc Tab -->
+                <div class="pw-content" id="tab-misc" style="display: none;">
+                    <div class="pw-section">PLAYER</div>
+
+                    <div class="pw-card" style="flex-direction: column; align-items: stretch;">
+                        <div class="pw-slider-info">
+                            <span class="pw-card-label">Walk Speed</span>
+                            <span class="pw-slider-val">16</span>
+                        </div>
+                        <div class="pw-slider-track" onmousedown="startSlider(event, this)">
+                            <div class="pw-slider-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-card" style="flex-direction: column; align-items: stretch;">
+                        <div class="pw-slider-info">
+                            <span class="pw-card-label">Jump Power</span>
+                            <span class="pw-slider-val">50</span>
+                        </div>
+                        <div class="pw-slider-track" onmousedown="startSlider(event, this)">
+                            <div class="pw-slider-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="pw-button" onclick="flashButton(this)">Reset Character</div>
+                    <div class="pw-button" onclick="flashButton(this)">Rejoin Server</div>
+
+                    <div class="pw-section">INFO</div>
+                    <div class="pw-label">FPS: 60</div>
+                    <div class="pw-label">Ping: 45ms</div>
+                    <div class="pw-label">Players: 12/30</div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="preview-desc">
+                <h3>Interact with the Preview</h3>
+                <p>This is a 1:1 representation of how your UI will look in-game. Try interacting with it:</p>
+                <ul class="interaction-list">
+                    <li>Click toggles to switch them on/off</li>
+                    <li>Click and drag sliders to change values</li>
+                    <li>Click dropdowns to cycle through options</li>
+                    <li>Click buttons to see the press animation</li>
+                    <li>Switch between tabs at the top</li>
+                </ul>
+                <br>
+                <div class="info-box">
+                    <span class="info-icon">💡</span>
+                    <span>All animations match exactly what players see in-game. Transition timing uses <code>Quart EaseOut</code> curves.</span>
+                </div>
+                <br>
+                <h3>What This Looks Like in Code</h3>
+                <p>The preview above is generated by this code:</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">lua</span>
+                    </div>
+                    <pre><code class="language-lua">local Window = KetamineUI:CreateWindow({
+    Name = "Example Hub",
+    Subtitle = "v1.0 | Interactive Demo"
+})
+
+local Combat = Window:CreateTab("Combat")
+Combat:CreateSection("AIMBOT")
+Combat:CreateToggle({Name = "Enable Aimbot", ...})
+Combat:CreateSlider({Name = "FOV Radius", Min = 50, Max = 800, ...})
+Combat:CreateSlider({Name = "Smoothness", Min = 0, Max = 100, ...})
+Combat:CreateDropdown({Name = "Target Part", ...})
+
+local Visuals = Window:CreateTab("Visuals")
+-- ...
+
+local Misc = Window:CreateTab("Misc")
+-- ...</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>KetamineUI — Built for speed. Designed for style.</p>
+        </footer>
+    </main>
+
+    <script>
+        // Syntax highlighting
+        hljs.highlightAll();
+
+        // Tab switching
+        document.querySelectorAll('.pw-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.pw-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.pw-content').forEach(c => c.style.display = 'none');
+                document.getElementById('tab-' + tab.dataset.tab).style.display = 'block';
+            });
+        });
+
+        // Toggle
+        function toggleSwitch(el) {
+            el.classList.toggle('on');
+        }
+
+        // Slider
+        let activeSlider = null;
+        function startSlider(e, track) {
+            activeSlider = track;
+            updateSlider(e);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            if (activeSlider) updateSlider(e);
+        });
+        document.addEventListener('mouseup', () => {
+            activeSlider = null;
+        });
+
+        function updateSlider(e) {
+            if (!activeSlider) return;
+            const rect = activeSlider.getBoundingClientRect();
+            let pct = (e.clientX - rect.left) / rect.width;
+            pct = Math.max(0, Math.min(1, pct));
+            activeSlider.querySelector('.pw-slider-fill').style.width = (pct * 100) + '%';
+
+            // Update value label
+            const card = activeSlider.closest('.pw-card');
+            const valEl = card.querySelector('.pw-slider-val');
+            const label = card.querySelector('.pw-card-label').textContent;
+
+            let min = 0, max = 100;
+            if (label.includes('FOV')) { min = 50; max = 800; }
+            else if (label.includes('Smooth')) { min = 0; max = 100; }
+            else if (label.includes('Walk')) { min = 16; max = 200; }
+            else if (label.includes('Jump')) { min = 50; max = 400; }
+            else if (label.includes('Ambient')) { min = 0; max = 100; }
+
+            valEl.textContent = Math.floor(min + pct * (max - min));
+        }
+
+        // Dropdown cycle
+        function cycleDropdown(el, options) {
+            const current = el.textContent.replace(' ▾', '');
+            let idx = options.indexOf(current);
+            idx = (idx + 1) % options.length;
+            el.textContent = options[idx];
+        }
+
+        // Button flash
+        function flashButton(el) {
+            el.style.background = '#9b59ff';
+            el.style.transform = 'scale(0.97)';
+            setTimeout(() => {
+                el.style.background = '';
+                el.style.transform = '';
+            }, 200);
+        }
+
+        // Mobile nav
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        function toggleMobileNav() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+        document.getElementById('mobileNavToggle').addEventListener('click', toggleMobileNav);
+        overlay.addEventListener('click', toggleMobileNav);
+        document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => {
+            sidebar.classList.remove('open'); overlay.classList.remove('show');
+        }));
+
+        // Back to top
+        const backBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => backBtn.classList.toggle('show', window.scrollY > 400));
+    </script>
+</body>
+</html>

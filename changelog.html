@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KetamineUI — Changelog</title>
+    <meta name="description" content="KetamineUI changelog and roadmap. See what's new and what's coming next.">
+    <meta name="theme-color" content="#9b59ff">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .changelog-entry {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .changelog-entry:hover {
+            border-color: var(--accent);
+        }
+        .changelog-entry.latest {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(155, 89, 255, 0.08);
+        }
+        .changelog-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .changelog-version {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .changelog-date {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            background: var(--bg3);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+        }
+        .changelog-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-latest { background: rgba(155,89,255,0.2); color: var(--accent); }
+        .badge-stable { background: rgba(100,220,140,0.15); color: #64dc8c; }
+
+        .changelog-list {
+            list-style: none;
+            padding: 0;
+        }
+        .changelog-list li {
+            padding: 0.4rem 0;
+            font-size: 0.88rem;
+            color: var(--text);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+        .change-tag {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .tag-new { background: rgba(100,220,140,0.15); color: #64dc8c; }
+        .tag-fix { background: rgba(255,180,80,0.15); color: #ffb450; }
+        .tag-improve { background: rgba(88,166,255,0.15); color: #58a6ff; }
+        .tag-breaking { background: rgba(255,80,80,0.15); color: #ff5050; }
+
+        /* Roadmap */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .roadmap-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        .roadmap-card h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .roadmap-card p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+        .roadmap-status {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-planned { background: rgba(155,89,255,0.15); color: var(--accent); }
+        .status-wip { background: rgba(255,180,80,0.15); color: #ffb450; }
+        .status-done { background: rgba(100,220,140,0.15); color: #64dc8c; }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo" style="text-decoration:none">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">KetamineUI</span>
+            </a>
+            <span class="version-badge">v1.0</span>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Pages</span>
+                <a href="index.html" class="nav-link">Documentation</a>
+                <a href="themes.html" class="nav-link">Themes</a>
+                <a href="preview.html" class="nav-link">Live Preview</a>
+                <a href="changelog.html" class="nav-link active">Changelog</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Versions</span>
+                <a href="#v1.0" class="nav-link">v1.0 — Initial Release</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Roadmap</span>
+                <a href="#roadmap" class="nav-link">Upcoming Features</a>
+            </div>
+        </div>
+    </nav>
+
+    <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" title="Back to top">↑</button>
+
+    <main class="content">
+        <section class="doc-section" style="border-top: none; padding-top: 3rem;">
+            <h2>Changelog</h2>
+            <p>Version history and release notes for KetamineUI.</p>
+        </section>
+
+        <!-- v1.0 -->
+        <div class="changelog-entry latest" id="v1.0">
+            <div class="changelog-header">
+                <span class="changelog-version">v1.0</span>
+                <span class="changelog-date">May 18, 2026</span>
+                <span class="changelog-badge badge-latest">Latest</span>
+            </div>
+            <ul class="changelog-list">
+                <li><span class="change-tag tag-new">New</span> Initial release of KetamineUI library</li>
+                <li><span class="change-tag tag-new">New</span> Window system with draggable, minimizable frames</li>
+                <li><span class="change-tag tag-new">New</span> Tab navigation with animated switching</li>
+                <li><span class="change-tag tag-new">New</span> Toggle element with smooth knob animation</li>
+                <li><span class="change-tag tag-new">New</span> Slider element with drag-to-adjust functionality</li>
+                <li><span class="change-tag tag-new">New</span> Button element with hover and press effects</li>
+                <li><span class="change-tag tag-new">New</span> Dropdown element with expandable option list</li>
+                <li><span class="change-tag tag-new">New</span> Textbox element with Enter-to-submit</li>
+                <li><span class="change-tag tag-new">New</span> Label element for dynamic status display</li>
+                <li><span class="change-tag tag-new">New</span> Section headers for element grouping</li>
+                <li><span class="change-tag tag-new">New</span> Notification system via Roblox CoreGui</li>
+                <li><span class="change-tag tag-new">New</span> Customizable theme system (12 color properties)</li>
+                <li><span class="change-tag tag-new">New</span> 7 premade UI themes (Default, Glass, Neon, Midnight, Rosé, Ember, Arctic)</li>
+                <li><span class="change-tag tag-new">New</span> Keybind to toggle UI visibility (default: RightCtrl)</li>
+                <li><span class="change-tag tag-new">New</span> Programmatic control via :Set() and :Get() methods</li>
+                <li><span class="change-tag tag-new">New</span> Dropdown :Refresh() for dynamic option updates</li>
+                <li><span class="change-tag tag-new">New</span> Auto-parent to CoreGui with PlayerGui fallback</li>
+                <li><span class="change-tag tag-new">New</span> ResetOnSpawn = false for persistence through deaths</li>
+            </ul>
+        </div>
+
+        <!-- Roadmap -->
+        <section class="doc-section" id="roadmap">
+            <h2>Roadmap</h2>
+            <p>Planned features and improvements for upcoming versions.</p>
+        </section>
+
+        <div class="roadmap-grid">
+            <div class="roadmap-card">
+                <h4>🎨 Theme Presets API <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Pass theme name as a string instead of manually setting colors. e.g. <code>Theme = "Neon"</code></p>
+            </div>
+            <div class="roadmap-card">
+                <h4>⌨️ Keybind Element <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Allow users to bind custom keys to toggles and actions directly from the UI.</p>
+            </div>
+            <div class="roadmap-card">
+                <h4>🖼️ Image Support <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Add image/icon support to tabs, buttons, and cards using Roblox asset IDs.</p>
+            </div>
+            <div class="roadmap-card">
+                <h4>💾 Config Saving <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Auto-save toggle states, slider values, and selections to executor filesystem.</p>
+            </div>
+            <div class="roadmap-card">
+                <h4>🔔 In-UI Notifications <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Toast notifications inside the UI window instead of relying on Roblox CoreGui.</p>
+            </div>
+            <div class="roadmap-card">
+                <h4>📐 Multi-Column Layout <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Side-by-side element arrangement for wider windows.</p>
+            </div>
+            <div class="roadmap-card">
+                <h4>🔍 Search / Filter <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Search bar to quickly find elements across all tabs.</p>
+            </div>
+            <div class="roadmap-card">
+                <h4>📱 Mobile Optimization <span class="roadmap-status status-planned">Planned</span></h4>
+                <p>Touch-friendly controls, larger hit areas, and swipe gestures for mobile executors.</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>KetamineUI — Built for speed. Designed for style.</p>
+        </footer>
+    </main>
+
+    <script>
+        // Mobile nav
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        function toggleMobileNav() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+        document.getElementById('mobileNavToggle').addEventListener('click', toggleMobileNav);
+        overlay.addEventListener('click', toggleMobileNav);
+        document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => {
+            sidebar.classList.remove('open'); overlay.classList.remove('show');
+        }));
+
+        // Back to top
+        const backBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => backBtn.classList.toggle('show', window.scrollY > 400));
+    </script>
+</body>
+</html>

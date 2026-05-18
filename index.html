@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KetamineUI — Documentation</title>
+    <meta name="description" content="KetamineUI — A lightweight, modern UI library for Roblox scripts. No dependencies. Beautiful dark purple theme.">
+    <meta name="theme-color" content="#9b59ff">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lua.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo" style="text-decoration:none">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">KetamineUI</span>
+            </a>
+            <span class="version-badge">v1.0</span>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Pages</span>
+                <a href="index.html" class="nav-link active">Documentation</a>
+                <a href="themes.html" class="nav-link">Themes</a>
+                <a href="preview.html" class="nav-link">Live Preview</a>
+                <a href="changelog.html" class="nav-link">Changelog</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Getting Started</span>
+                <a href="#introduction" class="nav-link">Introduction</a>
+                <a href="#installation" class="nav-link">Installation</a>
+                <a href="#quick-start" class="nav-link">Quick Start</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Configuration</span>
+                <a href="#window" class="nav-link">Window</a>
+                <a href="#tabs" class="nav-link">Tabs</a>
+                <a href="#theme" class="nav-link">Theme</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Elements</span>
+                <a href="#section" class="nav-link">Section</a>
+                <a href="#toggle" class="nav-link">Toggle</a>
+                <a href="#slider" class="nav-link">Slider</a>
+                <a href="#button" class="nav-link">Button</a>
+                <a href="#dropdown" class="nav-link">Dropdown</a>
+                <a href="#textbox" class="nav-link">Textbox</a>
+                <a href="#label" class="nav-link">Label</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Utilities</span>
+                <a href="#notifications" class="nav-link">Notifications</a>
+                <a href="#methods" class="nav-link">Methods</a>
+                <a href="#keybinds" class="nav-link">Keybinds</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Examples</span>
+                <a href="#full-example" class="nav-link">Full Example</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile nav toggle -->
+    <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Back to top -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" title="Back to top">↑</button>
+
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Hero -->
+        <section class="hero" id="introduction">
+            <div class="hero-glow"></div>
+            <h1 class="hero-title">Ketamine<span class="accent">UI</span></h1>
+            <p class="hero-subtitle">A lightweight, modern UI library for Roblox scripts. No dependencies. Pure instances. Beautiful by default.</p>
+            <div class="hero-buttons">
+                <a href="#installation" class="btn btn-primary">Get Started</a>
+                <a href="#full-example" class="btn btn-secondary">View Example</a>
+            </div>
+            <div class="hero-features">
+                <div class="feature-pill">⚡ Lightweight</div>
+                <div class="feature-pill">🎨 Customizable Theme</div>
+                <div class="feature-pill">📱 All Executors</div>
+                <div class="feature-pill">🔄 Animated</div>
+            </div>
+        </section>
+
+        <!-- Installation -->
+        <section class="doc-section" id="installation">
+            <h2>Installation</h2>
+            <p>Load KetamineUI in your script with a single line. Host the library file on GitHub or any raw file host.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local KetamineUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/GuysModz/GuyzModzScheduleITrainer/refs/heads/main/KetamineUI.lua"))()</code></pre>
+            </div>
+            <p>Or load from a local file:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local KetamineUI = loadstring(readfile("KetamineUI.lua"))()</code></pre>
+            </div>
+        </section>
+
+        <!-- Quick Start -->
+        <section class="doc-section" id="quick-start">
+            <h2>Quick Start</h2>
+            <p>Create a window, add a tab, and start building your UI in seconds.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local KetamineUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/GuysModz/GuyzModzScheduleITrainer/refs/heads/main/KetamineUI.lua"))()
+
+local Window = KetamineUI:CreateWindow({
+    Name = "My Script",
+    Subtitle = "v1.0"
+})
+
+local MainTab = Window:CreateTab("Main")
+
+MainTab:CreateToggle({
+    Name = "Auto Farm",
+    Default = false,
+    Callback = function(value)
+        getgenv().AutoFarm = value
+    end
+})</code></pre>
+            </div>
+        </section>
+
+        <!-- Window -->
+        <section class="doc-section" id="window">
+            <h2>Creating a Window</h2>
+            <p>The window is the main container. It includes a draggable title bar, close/minimize buttons, and houses all your tabs.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local Window = KetamineUI:CreateWindow({
+    Name = "My Hub",                          -- Window title
+    Subtitle = "v2.1",                        -- Subtitle (optional)
+    Size = UDim2.new(0, 400, 0, 520),         -- Window size (optional)
+    ToggleKey = Enum.KeyCode.RightControl     -- Toggle keybind (optional)
+})</code></pre>
+            </div>
+            <div class="param-table">
+                <h4>Parameters</h4>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Name</code></td><td>string</td><td><code>"Ketamine UI"</code></td><td>Title displayed in title bar</td></tr>
+                        <tr><td><code>Subtitle</code></td><td>string</td><td><code>""</code></td><td>Small text below title</td></tr>
+                        <tr><td><code>Size</code></td><td>UDim2</td><td><code>380×500</code></td><td>Window dimensions</td></tr>
+                        <tr><td><code>ToggleKey</code></td><td>Enum.KeyCode</td><td><code>RightControl</code></td><td>Key to show/hide UI</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tabs -->
+        <section class="doc-section" id="tabs">
+            <h2>Tabs</h2>
+            <p>Tabs organize your features into separate pages. A tab bar renders below the title. The first tab is automatically selected.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local CombatTab = Window:CreateTab("Combat")
+local VisualsTab = Window:CreateTab("Visuals")
+local MiscTab = Window:CreateTab("Misc")</code></pre>
+            </div>
+            <div class="info-box">
+                <span class="info-icon">💡</span>
+                <span>You can switch tabs programmatically with <code>Window:SwitchTab("TabName")</code></span>
+            </div>
+            <div class="info-box" style="border-color: rgba(255,180,80,0.3); background: rgba(255,180,80,0.05);">
+                <span class="info-icon">⚠️</span>
+                <span><strong>Important:</strong> Use the variable you stored the tab in (e.g. <code>CombatTab:CreateToggle</code>), NOT just <code>Tab:</code>. Using an undefined variable will silently fail and no elements will appear.</span>
+            </div>
+        </section>
+
+        <!-- Theme -->
+        <section class="doc-section" id="theme">
+            <h2>Theme Customization</h2>
+            <p>Override theme colors before creating your window to match your brand.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local KetamineUI = loadstring(game:HttpGet("YOUR_LINK"))()
+
+-- Customize to red theme
+KetamineUI.Theme.Accent = Color3.fromRGB(255, 85, 85)
+KetamineUI.Theme.AccentDim = Color3.fromRGB(180, 55, 55)
+KetamineUI.Theme.On = Color3.fromRGB(255, 100, 100)
+
+local Window = KetamineUI:CreateWindow({Name = "Red Hub"})</code></pre>
+            </div>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(155, 89, 255);"></div>
+                    <span class="color-name">Accent</span>
+                    <span class="color-value">155, 89, 255</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(100, 55, 190);"></div>
+                    <span class="color-name">AccentDim</span>
+                    <span class="color-value">100, 55, 190</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(14, 10, 22);"></div>
+                    <span class="color-name">BG</span>
+                    <span class="color-value">14, 10, 22</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(22, 16, 35);"></div>
+                    <span class="color-name">BG2</span>
+                    <span class="color-value">22, 16, 35</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(32, 24, 52);"></div>
+                    <span class="color-name">BG3</span>
+                    <span class="color-value">32, 24, 52</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(230, 220, 250);"></div>
+                    <span class="color-name">Text</span>
+                    <span class="color-value">230, 220, 250</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(120, 100, 160);"></div>
+                    <span class="color-name">TextDim</span>
+                    <span class="color-value">120, 100, 160</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(140, 100, 255);"></div>
+                    <span class="color-name">On</span>
+                    <span class="color-value">140, 100, 255</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(60, 45, 85);"></div>
+                    <span class="color-name">Off</span>
+                    <span class="color-value">60, 45, 85</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(180, 60, 120);"></div>
+                    <span class="color-name">Error</span>
+                    <span class="color-value">180, 60, 120</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(100, 220, 140);"></div>
+                    <span class="color-name">Success</span>
+                    <span class="color-value">100, 220, 140</span>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: rgb(255, 180, 80);"></div>
+                    <span class="color-name">Warning</span>
+                    <span class="color-value">255, 180, 80</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section -->
+        <section class="doc-section" id="section">
+            <h2>Section</h2>
+            <p>A styled header to visually group related elements.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">CombatTab:CreateSection("AIMBOT")</code></pre>
+            </div>
+        </section>
+
+        <!-- Toggle -->
+        <section class="doc-section" id="toggle">
+            <h2>Toggle</h2>
+            <p>An animated on/off switch. Returns an object with <code>:Set()</code> and <code>:Get()</code> methods for programmatic control.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local MyToggle = CombatTab:CreateToggle({
+    Name = "Enable Aimbot",
+    Default = false,
+    Callback = function(Value)
+        print("Aimbot:", Value)
+    end
+})
+
+-- Programmatic control:
+MyToggle:Set(true)
+print(MyToggle:Get()) -- true</code></pre>
+            </div>
+            <div class="param-table">
+                <h4>Parameters</h4>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Name</code></td><td>string</td><td><code>"Toggle"</code></td><td>Display name</td></tr>
+                        <tr><td><code>Default</code></td><td>boolean</td><td><code>false</code></td><td>Initial state</td></tr>
+                        <tr><td><code>Callback</code></td><td>function</td><td><code>nil</code></td><td>Called with <code>true</code>/<code>false</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slider -->
+        <section class="doc-section" id="slider">
+            <h2>Slider</h2>
+            <p>A draggable slider for numeric values. Displays the current value and calls back on change.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local FOV = CombatTab:CreateSlider({
+    Name = "FOV Radius",
+    Min = 50,
+    Max = 800,
+    Default = 200,
+    Callback = function(Value)
+        getgenv().AimbotFOV = Value
+    end
+})
+
+-- Update programmatically:
+FOV:Set(400)</code></pre>
+            </div>
+            <div class="param-table">
+                <h4>Parameters</h4>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Name</code></td><td>string</td><td><code>"Slider"</code></td><td>Display name</td></tr>
+                        <tr><td><code>Min</code></td><td>number</td><td><code>0</code></td><td>Minimum value</td></tr>
+                        <tr><td><code>Max</code></td><td>number</td><td><code>100</code></td><td>Maximum value</td></tr>
+                        <tr><td><code>Default</code></td><td>number</td><td><code>Min</code></td><td>Initial value</td></tr>
+                        <tr><td><code>Callback</code></td><td>function</td><td><code>nil</code></td><td>Called with the number value</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Button -->
+        <section class="doc-section" id="button">
+            <h2>Button</h2>
+            <p>A clickable button with hover animation and press feedback.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">MiscTab:CreateButton({
+    Name = "Reset Character",
+    Callback = function()
+        game.Players.LocalPlayer.Character:BreakJoints()
+    end
+})</code></pre>
+            </div>
+            <div class="param-table">
+                <h4>Parameters</h4>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Name</code></td><td>string</td><td><code>"Button"</code></td><td>Button text</td></tr>
+                        <tr><td><code>Callback</code></td><td>function</td><td><code>nil</code></td><td>Called on click</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Dropdown -->
+        <section class="doc-section" id="dropdown">
+            <h2>Dropdown</h2>
+            <p>A selection picker that expands to show options. Supports dynamic refresh.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local PartPicker = CombatTab:CreateDropdown({
+    Name = "Target Part",
+    Options = {"Head", "HumanoidRootPart", "UpperTorso"},
+    Default = "Head",
+    Callback = function(Value)
+        getgenv().TargetPart = Value
+    end
+})
+
+-- Change selection:
+PartPicker:Set("UpperTorso")
+
+-- Update options dynamically:
+PartPicker:Refresh({"Head", "Torso", "LeftArm", "RightArm"})</code></pre>
+            </div>
+            <div class="param-table">
+                <h4>Parameters</h4>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Name</code></td><td>string</td><td><code>"Dropdown"</code></td><td>Display label</td></tr>
+                        <tr><td><code>Options</code></td><td>table</td><td><code>{}</code></td><td>Array of string options</td></tr>
+                        <tr><td><code>Default</code></td><td>string</td><td>First option</td><td>Initially selected</td></tr>
+                        <tr><td><code>Callback</code></td><td>function</td><td><code>nil</code></td><td>Called with selected string</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Textbox -->
+        <section class="doc-section" id="textbox">
+            <h2>Textbox</h2>
+            <p>A text input field. Callback fires when the user presses Enter.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local Input = MiscTab:CreateTextbox({
+    Name = "Player Name",
+    Default = "",
+    Placeholder = "Enter username...",
+    Callback = function(Value)
+        print("Searching for:", Value)
+    end
+})
+
+-- Set programmatically:
+Input:Set("Player123")</code></pre>
+            </div>
+            <div class="param-table">
+                <h4>Parameters</h4>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Name</code></td><td>string</td><td><code>"Input"</code></td><td>Display label</td></tr>
+                        <tr><td><code>Default</code></td><td>string</td><td><code>""</code></td><td>Initial text</td></tr>
+                        <tr><td><code>Placeholder</code></td><td>string</td><td><code>"..."</code></td><td>Placeholder when empty</td></tr>
+                        <tr><td><code>Callback</code></td><td>function</td><td><code>nil</code></td><td>Called on Enter press</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Label -->
+        <section class="doc-section" id="label">
+            <h2>Label</h2>
+            <p>A read-only text display for status info. Update dynamically with <code>:Set()</code>.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local Status = MiscTab:CreateLabel("Status: Idle")
+
+-- Update later:
+Status:Set("Status: Farming...")
+Status:Set("FPS: " .. fps)</code></pre>
+            </div>
+        </section>
+
+        <!-- Notifications -->
+        <section class="doc-section" id="notifications">
+            <h2>Notifications</h2>
+            <p>Send native Roblox notification popups.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">KetamineUI:Notify({
+    Title = "Success",
+    Text = "Script loaded successfully!",
+    Duration = 3
+})</code></pre>
+            </div>
+            <div class="param-table">
+                <h4>Parameters</h4>
+                <table>
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Title</code></td><td>string</td><td><code>"KetamineUI"</code></td><td>Notification title</td></tr>
+                        <tr><td><code>Text</code></td><td>string</td><td><code>""</code></td><td>Notification body</td></tr>
+                        <tr><td><code>Duration</code></td><td>number</td><td><code>3</code></td><td>Display seconds</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Methods -->
+        <section class="doc-section" id="methods">
+            <h2>Methods</h2>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">-- Destroy the window
+Window:Destroy()
+
+-- Destroy ALL KetamineUI instances
+KetamineUI:Destroy()
+
+-- Switch to a specific tab
+Window:SwitchTab("Visuals")
+
+-- Element methods (Toggle, Slider, Dropdown, Textbox, Label)
+element:Set(value)    -- Set value programmatically
+element:Get()         -- Get current value
+
+-- Dropdown-specific
+dropdown:Refresh({"new", "options"})</code></pre>
+            </div>
+        </section>
+
+        <!-- Keybinds -->
+        <section class="doc-section" id="keybinds">
+            <h2>Keybinds</h2>
+            <div class="keybind-grid">
+                <div class="keybind-card">
+                    <kbd>RightCtrl</kbd>
+                    <span>Toggle UI visibility</span>
+                </div>
+                <div class="keybind-card">
+                    <kbd>Drag Title</kbd>
+                    <span>Move window</span>
+                </div>
+                <div class="keybind-card">
+                    <kbd>—</kbd>
+                    <span>Minimize window</span>
+                </div>
+                <div class="keybind-card">
+                    <kbd>✕</kbd>
+                    <span>Close/destroy window</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Full Example -->
+        <section class="doc-section" id="full-example">
+            <h2>Full Example</h2>
+            <p>A complete script demonstrating all elements:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">lua</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code class="language-lua">local KetamineUI = loadstring(game:HttpGet("YOUR_RAW_LINK"))()
+
+local Window = KetamineUI:CreateWindow({
+    Name = "Example Hub",
+    Subtitle = "v1.0 | Full Demo"
+})
+
+-- Combat Tab
+local Combat = Window:CreateTab("Combat")
+Combat:CreateSection("AIMBOT")
+
+local aimbot = Combat:CreateToggle({
+    Name = "Enable Aimbot",
+    Default = false,
+    Callback = function(v) getgenv().Aimbot = v end
+})
+
+Combat:CreateSlider({
+    Name = "FOV Radius",
+    Min = 50, Max = 800, Default = 200,
+    Callback = function(v) getgenv().FOV = v end
+})
+
+Combat:CreateDropdown({
+    Name = "Target Part",
+    Options = {"Head", "HumanoidRootPart", "UpperTorso"},
+    Default = "Head",
+    Callback = function(v) getgenv().Part = v end
+})
+
+-- Visuals Tab
+local Visuals = Window:CreateTab("Visuals")
+Visuals:CreateSection("ESP")
+
+Visuals:CreateToggle({
+    Name = "Player ESP",
+    Default = false,
+    Callback = function(v) getgenv().ESP = v end
+})
+
+Visuals:CreateToggle({
+    Name = "Fullbright",
+    Default = false,
+    Callback = function(v)
+        game.Lighting.Brightness = v and 2 or 1
+        game.Lighting.FogEnd = v and 100000 or 1000
+    end
+})
+
+-- Misc Tab
+local Misc = Window:CreateTab("Misc")
+Misc:CreateSection("PLAYER")
+
+Misc:CreateSlider({
+    Name = "Walk Speed",
+    Min = 16, Max = 200, Default = 16,
+    Callback = function(v)
+        local hum = game.Players.LocalPlayer.Character
+            and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+        if hum then hum.WalkSpeed = v end
+    end
+})
+
+Misc:CreateTextbox({
+    Name = "TP to Player",
+    Placeholder = "Username...",
+    Callback = function(v)
+        local t = game.Players:FindFirstChild(v)
+        if t and t.Character then
+            game.Players.LocalPlayer.Character:MoveTo(
+                t.Character.HumanoidRootPart.Position
+            )
+        end
+    end
+})
+
+Misc:CreateButton({
+    Name = "Reset Character",
+    Callback = function()
+        game.Players.LocalPlayer.Character:BreakJoints()
+    end
+})
+
+Misc:CreateSection("INFO")
+local fpsLabel = Misc:CreateLabel("FPS: --")
+
+task.spawn(function()
+    while task.wait(1) do
+        local fps = math.floor(1 / game:GetService("RunService").RenderStepped:Wait())
+        fpsLabel:Set("FPS: " .. fps)
+    end
+end)
+
+KetamineUI:Notify({
+    Title = "Example Hub",
+    Text = "Loaded! RightCtrl to toggle.",
+    Duration = 4
+})</code></pre>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>KetamineUI — Built for speed. Designed for style.</p>
+        </footer>
+    </main>
+
+    <script>
+        // Syntax highlighting
+        hljs.highlightAll();
+
+        // Copy button
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Active nav link on scroll — only update anchor links, not page links
+        const sections = document.querySelectorAll('.doc-section[id], .hero[id]');
+        const anchorLinks = document.querySelectorAll('.nav-link[href^="#"]');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    anchorLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        sections.forEach(section => observer.observe(section));
+
+        // Keep the Documentation page link active
+        const pageLink = document.querySelector('.nav-link[href="index.html"]');
+        if (pageLink) pageLink.classList.add('active');
+
+        // Mobile nav
+        const sidebar = document.getElementById('sidebar');
+        const mobileToggle = document.getElementById('mobileNavToggle');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function toggleMobileNav() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        mobileToggle.addEventListener('click', toggleMobileNav);
+        overlay.addEventListener('click', toggleMobileNav);
+
+        // Close sidebar on link click (mobile)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+            });
+        });
+
+        // Back to top
+        const backBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backBtn.classList.toggle('show', window.scrollY > 400);
+        });
+    </script>
+</body>
+</html>
